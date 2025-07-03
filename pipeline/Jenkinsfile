@@ -67,29 +67,32 @@ pipeline {
         success {
           script {
             if (params.ACTION == 'apply') {
-              // Leer IP pública actualizada
-              def publicIp = sh(script: 'terraform output -raw instance_public_ip', returnStdout: true).trim()
-              env.INSTANCE_PUBLIC_IP = publicIp
-              echo "IP pública actualizada: ${publicIp}"
+              dir('terraform') {
+                // Leer IP pública actualizada
+                def publicIp = sh(script: 'terraform output -raw instance_public_ip', returnStdout: true).trim()
+                env.INSTANCE_PUBLIC_IP = publicIp
+                echo "IP pública actualizada: ${publicIp}"
 
-              // Archivar archivo solo si existe
-              def ipFile = 'instance_public_ip.txt'
-              if (fileExists(ipFile)) {
-                archiveArtifacts artifacts: ipFile, fingerprint: true
-                echo "Archivo ${ipFile} archivado correctamente."
-              } else {
-                echo "Archivo ${ipFile} no encontrado para archivar."
+                // Archivar archivo solo si existe
+                def ipFile = 'instance_public_ip.txt'
+                if (fileExists(ipFile)) {
+                  archiveArtifacts artifacts: ipFile, fingerprint: true
+                  echo "Archivo ${ipFile} archivado correctamente."
+                } else {
+                  echo "Archivo ${ipFile} no encontrado para archivar."
+                }
               }
             } else if (params.ACTION == 'destroy') {
               env.INSTANCE_PUBLIC_IP = ''
-
-              // Eliminar archivo instance_public_ip.txt si existe
-              def ipFile = 'instance_public_ip.txt'
-              if (fileExists(ipFile)) {
-                sh "rm -f ${ipFile}"
-                echo "Archivo ${ipFile} eliminado tras destroy."
-              } else {
-                echo "Archivo ${ipFile} no encontrado para eliminar."
+              dir('terraform') {
+                // Eliminar archivo instance_public_ip.txt si existe
+                def ipFile = 'instance_public_ip.txt'
+                if (fileExists(ipFile)) {
+                  sh "rm -f ${ipFile}"
+                  echo "Archivo ${ipFile} eliminado tras destroy."
+                } else {
+                  echo "Archivo ${ipFile} no encontrado para eliminar."
+                }
               }
             }
           }
