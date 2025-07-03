@@ -6,6 +6,7 @@ ACTION="$2"
 
 cd "$(dirname "$0")/../../terraform"
 
+rm -rf .terraform/modules
 terraform init -upgrade
 terraform plan -out=tfplan
 

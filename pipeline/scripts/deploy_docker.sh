@@ -7,7 +7,9 @@ cd "$DEPLOY_DIR"
 echo "Actualizando sistema e instalando Nginx si no está instalado..."
 
 if ! command -v nginx &> /dev/null; then
-  sudo apt update
+  sudo rm -rf /var/lib/apt/lists/*
+  sudo apt-get clean
+  sudo apt-get update -y
   sudo apt install -y nginx
   sudo systemctl enable nginx
   sudo systemctl start nginx

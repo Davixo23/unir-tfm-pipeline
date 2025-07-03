@@ -183,6 +183,13 @@ pipeline {
     }
   }
   post {
+    success {
+      script {
+        if (params.ACTION == 'destroy') {
+          cleanWs()
+        }
+      }
+    }
     failure {
       echo 'Pipeline falló. Revisa los logs.'
     }
