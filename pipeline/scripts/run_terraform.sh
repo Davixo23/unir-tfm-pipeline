@@ -4,6 +4,8 @@ set -e
 export TF_VAR_private_key_path="$1"
 ACTION="$2"
 
+cd "$(dirname "$0")/../../terraform"
+
 terraform init
 terraform plan -out=tfplan
 
