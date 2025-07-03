@@ -186,5 +186,8 @@ pipeline {
     failure {
       echo 'Pipeline falló. Revisa los logs.'
     }
+    always {
+      cleanWs()  // limpia el workspace al finalizar el pipeline
+    }
   }
 }
