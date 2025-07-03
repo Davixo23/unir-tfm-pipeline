@@ -164,16 +164,14 @@ pipeline {
         dir('pipeline') {
           sshagent(['oci-ssh-private-key']) {
             sh """
-              echo "Copiando script de despliegue a la VM..."
-              scp -o StrictHostKeyChecking=no scripts/deploy_docker.sh ubuntu@${env.INSTANCE_PUBLIC_IP}:/home/ubuntu/
-
-              echo "Dando permisos y ejecutando script de despliegue..."
-              ssh -o StrictHostKeyChecking=no ubuntu@${env.INSTANCE_PUBLIC_IP} 'chmod +x /home/ubuntu/deploy_docker.sh && /home/ubuntu/deploy_docker.sh'
+              chmod +x scripts/deploy_to_vm.sh
+              ./scripts/deploy_to_vm.sh ${env.INSTANCE_PUBLIC_IP} \$SSH_AUTH_SOCK scripts/deploy_docker.sh
             """
           }
         }
       }
     }
+
 
     stage('Cleanup Docker Images') {
       steps {
