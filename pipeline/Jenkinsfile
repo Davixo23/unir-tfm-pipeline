@@ -119,7 +119,7 @@ pipeline {
     stage('Build Docker Image') {
       when { expression { params.ACTION == 'apply' } }
       steps {
-        dir('restaurante-proyecto-basico') {
+        dir('restaurant-proyecto-basico') {
           script {
             withCredentials([
               string(credentialsId: 'supabase_url', variable: 'SUPABASE_URL'),
