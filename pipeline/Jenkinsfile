@@ -177,8 +177,10 @@ pipeline {
 
     stage('Cleanup Docker Images') {
       steps {
-        sh 'chmod +x scripts/cleanup_docker_images.sh'
-        sh './scripts/cleanup_docker_images.sh'
+        dir('pipeline'){
+          sh 'chmod +x scripts/cleanup_docker_images.sh'
+          sh './scripts/cleanup_docker_images.sh'
+        }
       }
     }
   }
