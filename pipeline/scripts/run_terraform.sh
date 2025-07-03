@@ -16,7 +16,7 @@ if [ "$ACTION" = "apply" ]; then
   terraform output -raw instance_public_ip > instance_public_ip.txt
 
   # Copiar el archivo a la carpeta pipeline para que Jenkins lo encuentre
-  cp instance_public_ip.txt ../../pipeline/
+  cp instance_public_ip.txt ../pipeline/
 
 elif [ "$ACTION" = "destroy" ]; then
   terraform destroy -auto-approve
