@@ -119,21 +119,19 @@ pipeline {
     stage('Build Docker Image') {
       when { expression { params.ACTION == 'apply' } }
       steps {
-        dir('restaurant-proyecto-basico') {
-          script {
-            withCredentials([
-              string(credentialsId: 'supabase_url', variable: 'SUPABASE_URL'),
-              string(credentialsId: 'supabase_anon_key', variable: 'SUPABASE_ANON_KEY')
-            ]) {
-              env.IMAGE_NAME = "${env.DOCKERHUB_USER}/restaurant-proyecto-basico:${env.TAG}"
-              env.IMAGE_NAME_LATEST = "${env.DOCKERHUB_USER}/restaurant-proyecto-basico:latest"
+        script {
+          withCredentials([
+            string(credentialsId: 'supabase_url', variable: 'SUPABASE_URL'),
+            string(credentialsId: 'supabase_anon_key', variable: 'SUPABASE_ANON_KEY')
+          ]) {
+            env.IMAGE_NAME = "${env.DOCKERHUB_USER}/restaurant-proyecto-basico:${env.TAG}"
+            env.IMAGE_NAME_LATEST = "${env.DOCKERHUB_USER}/restaurant-proyecto-basico:latest"
 
-              env.BUILD_IMAGE = docker.build(env.IMAGE_NAME,
-                "--build-arg NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL} " +
-                "--build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY} " +
-                "restaurant-proyecto-basico"
-              )
-            }
+            env.BUILD_IMAGE = docker.build(env.IMAGE_NAME,
+              "--build-arg NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL} " +
+              "--build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY} " +
+              "restaurant-proyecto-basico"
+            )
           }
         }
       }
