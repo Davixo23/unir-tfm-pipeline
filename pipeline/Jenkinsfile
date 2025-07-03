@@ -57,8 +57,8 @@ pipeline {
         dir('terraform') {
           withCredentials([file(credentialsId: 'oci-private-key', variable: 'OCI_PRIVATE_KEY')]) {
             sh '''
-              chmod +x scripts/run_terraform.sh
-              ./scripts/run_terraform.sh "$OCI_PRIVATE_KEY" "${ACTION}"
+              chmod +x ../../pipeline/scripts/run_terraform.sh
+              ../../pipeline/scripts/run_terraform.sh "$OCI_PRIVATE_KEY" "${ACTION}"
             '''
           }
         }
