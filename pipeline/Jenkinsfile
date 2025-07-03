@@ -16,25 +16,35 @@ pipeline {
   }
   stages {
     stage('Check Existing Infrastructure') {
-    steps {
+      steps {
         dir('terraform') {
-        script {
+          script {
+            // Verificar si terraform está inicializado
+            def terraformInitialized = fileExists('.terraform')
+
+            if (!terraformInitialized) {
+              echo "Terraform no está inicializado. Ejecutando 'terraform init'..."
+              sh 'terraform init'
+            } else {
+              echo "Terraform ya está inicializado."
+            }
+
             env.INSTANCE_PUBLIC_IP = ''
             try {
-            sh 'terraform refresh'
-            def existingIp = sh(script: 'terraform output -raw instance_public_ip', returnStdout: true).trim()
-            if (existingIp && existingIp != '') {
+              sh 'terraform refresh'
+              def existingIp = sh(script: 'terraform output -raw instance_public_ip', returnStdout: true).trim()
+              if (existingIp && existingIp != '') {
                 env.INSTANCE_PUBLIC_IP = existingIp
-            } else {
+              } else {
                 echo "Output instance_public_ip está vacío."
-            }
+              }
             } catch (err) {
-            echo "No se encontró IP pública existente."
+              echo "No se encontró IP pública existente."
             }
             echo "IP pública detectada: '${env.INSTANCE_PUBLIC_IP}'"
+          }
         }
-        }
-    }
+      }
     }
 
     stage('Terraform') {
