@@ -6,7 +6,7 @@ ACTION="$2"
 
 cd "$(dirname "$0")/../../terraform"
 
-terraform init
+terraform init -upgrade
 terraform plan -out=tfplan
 
 if [ "$ACTION" = "apply" ]; then

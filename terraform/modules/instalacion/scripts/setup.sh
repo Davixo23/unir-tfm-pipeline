@@ -5,10 +5,11 @@ sudo apt-get update -y
 echo "Instalando Git..."
 sudo apt-get install -y git
 
-echo "Verificando que Docker está instalado..."
+echo "Instalando Docker..."
 if ! command -v docker &> /dev/null; then
-  echo "Docker no está instalado, por favor instálalo primero."
-  exit 1
+  sudo apt-get install -y docker.io
+  sudo systemctl enable docker
+  sudo systemctl start docker
 else
   echo "Docker ya está instalado."
 fi
@@ -32,3 +33,13 @@ sudo apt-get install -y iptables-persistent
 sudo netfilter-persistent save
 
 echo "Instalación y configuración completada."
+
+echo "Versiones instaladas:"
+echo -n "Git version: "
+git --version
+
+echo -n "Docker version: "
+docker --version
+
+echo -n "Nginx version: "
+nginx -v
