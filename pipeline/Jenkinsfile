@@ -158,14 +158,16 @@ pipeline {
         expression { params.ACTION == 'apply' && env.INSTANCE_PUBLIC_IP != '' }
       }
       steps {
-        sshagent(['oci-ssh-private-key']) {
-          sh """
-            echo "Copiando script de despliegue a la VM..."
-            scp -o StrictHostKeyChecking=no scripts/deploy_docker.sh ubuntu@${env.INSTANCE_PUBLIC_IP}:/home/ubuntu/
+        dir('pipeline') {
+          sshagent(['oci-ssh-private-key']) {
+            sh """
+              echo "Copiando script de despliegue a la VM..."
+              scp -o StrictHostKeyChecking=no scripts/deploy_docker.sh ubuntu@${env.INSTANCE_PUBLIC_IP}:/home/ubuntu/
 
-            echo "Dando permisos y ejecutando script de despliegue..."
-            ssh -o StrictHostKeyChecking=no ubuntu@${env.INSTANCE_PUBLIC_IP} 'chmod +x /home/ubuntu/deploy_docker.sh && /home/ubuntu/deploy_docker.sh'
-          """
+              echo "Dando permisos y ejecutando script de despliegue..."
+              ssh -o StrictHostKeyChecking=no ubuntu@${env.INSTANCE_PUBLIC_IP} 'chmod +x /home/ubuntu/deploy_docker.sh && /home/ubuntu/deploy_docker.sh'
+            """
+          }
         }
       }
     }
