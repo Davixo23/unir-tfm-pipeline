@@ -9,6 +9,17 @@ sudo systemctl start docker
 sudo systemctl enable docker
 sudo usermod -aG docker ubuntu # Asume usuario 'ubuntu', ajusta si es diferente
 
+echo "Instalando Nginx..."
+if ! command -v nginx &> /dev/null; then
+  sudo apt-get install -y nginx
+  sudo systemctl enable nginx
+  sudo systemctl start nginx
+else
+  echo "Nginx ya está instalado."
+  sudo systemctl enable nginx
+  sudo systemctl start nginx
+fi
+
 echo "Configurando iptables para HTTP (puerto 80)..."
 # Permitir todo el tráfico de entrada. Esta es una configuración muy laxa.
 # Para producción, se recomienda especificar puertos y fuentes.
