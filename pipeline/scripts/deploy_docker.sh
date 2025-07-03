@@ -30,15 +30,15 @@ sudo rm -f /etc/nginx/sites-enabled/000-default || true
 
 echo "Descargando imagen Docker desde Docker Hub..."
 
-docker pull davixo/restaurant-proyecto-basico:latest
+sudo docker pull davixo/restaurant-proyecto-basico:latest
 
 echo "Deteniendo y eliminando contenedor antiguo (si existe)..."
 
-docker rm -f restaurant-app || true
+sudo docker rm -f restaurant-app || true
 
 echo "Ejecutando contenedor restaurant-app en puerto 3000..."
 
-docker run -d --name restaurant-app -p 3000:3000 davixo/restaurant-proyecto-basico:latest
+sudo docker run -d --name restaurant-app -p 3000:3000 davixo/restaurant-proyecto-basico:latest
 
 echo "Creando configuración personalizada de Nginx para proxy inverso..."
 
