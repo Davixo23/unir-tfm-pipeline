@@ -74,7 +74,7 @@ pipeline {
                 echo "IP pública actualizada: ${publicIp}"
 
                 // Archivar archivo solo si existe
-                def ipFile = 'instance_public_ip.txt'
+                def ipFile = 'instance_public_ip.html'
                 if (fileExists(ipFile)) {
                   archiveArtifacts artifacts: ipFile, fingerprint: true
                   echo "Archivo ${ipFile} archivado correctamente."
@@ -86,7 +86,7 @@ pipeline {
               env.INSTANCE_PUBLIC_IP = ''
               dir('terraform') {
                 // Eliminar archivo instance_public_ip.txt si existe
-                def ipFile = 'instance_public_ip.txt'
+                def ipFile = 'instance_public_ip.html'
                 if (fileExists(ipFile)) {
                   sh "rm -f ${ipFile}"
                   echo "Archivo ${ipFile} eliminado tras destroy."

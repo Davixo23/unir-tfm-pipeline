@@ -14,9 +14,8 @@ if [ "$ACTION" = "apply" ]; then
 
   # Obtener IP pública
   IP=$(terraform output -raw instance_public_ip)
-  echo "$IP" > instance_public_ip.txt
 
-  # Crear archivo HTML con link
+  # Crear archivo HTML con link (sin crear archivo .txt)
   cat > instance_public_ip.html <<EOF
 <!DOCTYPE html>
 <html lang="es">
