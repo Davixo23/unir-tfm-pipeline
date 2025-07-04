@@ -26,14 +26,6 @@ module "redes" {
   }
 }
 
-# Llama al módulo de instalación
-module "instalacion" {
-  source = "./modules/instalacion"
-  providers = {
-    oci = oci
-  }
-}
-
 # Llama al módulo de instancia
 module "instancia" {
   source              = "./modules/instancia"
@@ -46,3 +38,13 @@ module "instancia" {
     oci = oci
   }
 }
+
+# Llama al módulo de instalación
+module "instalacion" {
+  source = "./modules/instalacion"
+  providers = {
+    oci = oci
+  }
+}
+
+
